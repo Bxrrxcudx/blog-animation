@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { getArticle } from "../../api/api";
+import { getMovie } from "../../api/omdb"
 import BlackBox from "./BlackBox.js";
 import "./Article.css";
 
@@ -23,7 +23,8 @@ class Article extends Component {
   }
 
   async refreshSingleArticle(articleId) {
-    const filterArticle = await getArticle(articleId);
+    const filterArticle = await getMovie(articleId);
+    console.log('The movie => :', filterArticle);
 
     if (!filterArticle) {
       // This article doesn't exist.
@@ -36,11 +37,11 @@ class Article extends Component {
   }
 
   render() {
-    const { article: { title, body, img } } = this.state;
+    const { article } = this.state;
 
     return (
       <Fragment>
-        <div className="Article-img" style={{ backgroundImage: `url(${img})` }}>
+        <div className="Article-img" style={{ backgroundImage: `url(${article.poster})` }}>
           <BlackBox reverseDirection={false} />
           <BlackBox reverseDirection={true} />
           <BlackBox reverseDirection={false} />
@@ -48,8 +49,8 @@ class Article extends Component {
         </div>
         <div className="container">
           <div className="Article-body">
-            <h1 className="Article-title">{title}</h1>
-            <p>{body}</p>
+            <h1 className="Article-title">{article.title}</h1>
+            <p>{article.plot}</p>
           </div>
         </div>
       </Fragment>
